@@ -1,9 +1,9 @@
 const pool = require('../db/db');
 
 // Obtener todas las cartass
-exports.getCitas = async (req, res) => {
+exports.getRols = async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM general.citas ORDER BY id_citas');
+    const result = await pool.query('SELECT * FROM general.rol ORDER BY id_rol');
     res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -11,12 +11,12 @@ exports.getCitas = async (req, res) => {
 };
 
 // Obtener una cartas por ID
-exports.getCitaById = async (req, res) => {
+exports.getRolById = async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await pool.query('SELECT * FROM general.citas WHERE id_citas = $1', [id]);
+    const result = await pool.query('SELECT * FROM general.rol WHERE id_rol = $1', [id]);
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'notes not found' });
+      return res.status(404).json({ error: 'roles no encontrados' });
     }
     res.json(result.rows[0]);
   } catch (err) {
@@ -25,14 +25,14 @@ exports.getCitaById = async (req, res) => {
 };
 
 // Crear una nueva cartas
-exports.createCita = async (req, res) => {
-  const { fk_paciente, fk_doctor, date_cita, time_cita, desc_cita, status_cita, logic_cita } = req.body;
+exports.createRol = async (req, res) => {
+  const { nombre_rol, desc_rol, logic_rol } = req.body;
   
-  //fk_paciente, fk_doctor, date_cita, time_cita, desc_cita, status_cita, logic_cita
+  //nombre_rol, desc_rol, logic_rol
   try {
     const result = await pool.query(
-      'INSERT INTO general.citas (fk_paciente, fk_doctor, date_cita, time_cita, desc_cita, status_cita, logic_cita) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-      [ fk_paciente, fk_doctor, date_cita, time_cita, desc_cita, status_cita, logic_cita]
+      'INSERT INTO general.rol (nombre_rol, desc_rol, logic_rol) VALUES ($1, $2, $3) RETURNING *',
+      [ nombre_rol, desc_rol, logic_rol ]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -41,16 +41,16 @@ exports.createCita = async (req, res) => {
 };
 
 // Actualizar una cartas existente
-exports.updateCita = async (req, res) => {
+exports.updateRol = async (req, res) => {
   const { id } = req.params;
-  const { fk_paciente, fk_doctor, date_cita, time_cita, desc_cita, status_cita, logic_cita } = req.body;
+  const { nombre_rol, desc_rol, logic_rol } = req.body;
   try {
     const result = await pool.query(
-      'UPDATE general.citas SET fk_paciente = $1, fk_doctor = $2, date_cita = $3, time_cita = $4, desc_cita = $5, status_cita = $6, logic_cita = $7 WHERE id_citas = $8 RETURNING *',
-      [ fk_paciente, fk_doctor, date_cita, time_cita, desc_cita, status_cita, logic_cita , id]
+      'UPDATE general.rol SET nombre_rol = $1, desc_rol = $2, logic_rol = $3 WHERE id_rol = $4 RETURNING *',
+      [ nombre_rol, desc_rol, logic_rol , id]
     );
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'notes not found' });
+      return res.status(404).json({ error: 'role no encontrados' });
     }
     res.json(result.rows[0]);
   } catch (err) {
@@ -59,14 +59,14 @@ exports.updateCita = async (req, res) => {
 };
 
 // Eliminar una cartas
-exports.deleteCita = async (req, res) => {
+exports.deleteRol = async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await pool.query('DELETE FROM general.citas WHERE id_citas = $1 RETURNING *', [id]);
+    const result = await pool.query('DELETE FROM general.rol WHERE id_rol = $1 RETURNING *', [id]);
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'notes not found' });
+      return res.status(404).json({ error: 'rol no encontrado' });
     }
-    res.json({ message: 'notes deleted successfully' });
+    res.json({ message: 'rol borrado exitosamente!' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
