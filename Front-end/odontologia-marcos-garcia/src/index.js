@@ -1,17 +1,35 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import Aula from './componentes/Aula';
+import styles from './index.module.css'
+import Boton from './elementos/boton';
+import FormularioInicioSesion from './componentes/FormularioInicioSesion';
+
+const App = () => {
+  const [sesion, cambiarEstadoSesion]= useState(false);
+  return(
+    <div className={styles.contenedor}>
+    {sesion === true ?
+      <>
+      <Aula/>
+      <Boton rojo onClick={()=> cambiarEstadoSesion(false)}>cerrar sesion</Boton>
+      </>
+      :
+      <>
+        <h1>No has iniciado sesion</h1>
+        <FormularioInicioSesion cambiarEstadoSesion={cambiarEstadoSesion}/>
+        {/*<Boton verde anchocompleto onClick={()=> cambiarEstadoSesion(true)}>iniciar sesion</Boton>*/}
+      </>
+    }
+    </div>
+  )
+};
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+root.render(<App/>)
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+
+
+
