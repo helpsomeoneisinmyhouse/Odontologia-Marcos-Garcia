@@ -1,29 +1,42 @@
-import React, {useState} from 'react';
 import ReactDOM from 'react-dom/client';
-import Aula from './componentes/Aula';
-import styles from './index.module.css'
-import Boton from './elementos/boton';
-import FormularioInicioSesion from './componentes/FormularioInicioSesion';
+// Filename - App.js
 
-const App = () => {
-  const [sesion, cambiarEstadoSesion]= useState(false);
-  return(
-    <div className={styles.contenedor}>
-    {sesion === true ?
-      <>
-      <Aula/>
-      <Boton rojo onClick={()=> cambiarEstadoSesion(false)}>cerrar sesion</Boton>
-      </>
-      :
-      <>
-        <h1>No has iniciado sesion</h1>
-        <FormularioInicioSesion cambiarEstadoSesion={cambiarEstadoSesion}/>
-        {/*<Boton verde anchocompleto onClick={()=> cambiarEstadoSesion(true)}>iniciar sesion</Boton>*/}
-      </>
-    }
-    </div>
-  )
-};
+import React from "react";
+import Navbar from "./componentes/Navbar";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+} from "react-router-dom";
+import Home from "./Paginas/index";
+import About from "./Paginas/about";
+import Services from "./Paginas/services";
+import Contact from "./Paginas/contact";
+import SignUp from "./Paginas/SignUp";
+
+function App() {
+    return (
+        <Router>
+            <Navbar />
+            <Routes>
+                <Route exact path="/" element={<Home />} />
+                <Route exact path="/home" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route
+                    path="/contact"
+                    element={<Contact />}
+                />
+                <Route path="/Services" element={<Services />} />
+                <Route
+                    path="/sign-up"
+                    element={<SignUp />}
+                />
+            </Routes>
+        </Router>
+    );
+}
+
+export default App;
 
 
 
