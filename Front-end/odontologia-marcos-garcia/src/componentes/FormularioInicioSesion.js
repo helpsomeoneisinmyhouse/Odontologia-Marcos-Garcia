@@ -3,12 +3,17 @@ import React, {useState} from "react";
 const FormularioInicioSesion = (props) => {
     const [usuario, cambiarUsuario] = useState('');
     const [clave, cambiarClave] = useState('');
+    const [specific, cambiarPaginaEspecifica] = useState('');
+
     const cambiarEstado = (evento) => {
         if (evento.target.name === "usuario"){
             cambiarUsuario(evento.target.value)
         } else if (evento.target.name === "clave"){
             cambiarClave(evento.target.value)
+        }else if (evento.target.name === "specific"){
+            cambiarPaginaEspecifica(evento.target.value)
         }}
+        
     const validar = (evento) => {
         evento.preventDefault();
         if (usuario === "clase" && clave === "clase"){
@@ -18,6 +23,22 @@ const FormularioInicioSesion = (props) => {
             cambiarUsuario("")
             cambiarUsuario("")
         }
+
+        switch (specific) {
+            case "doctor":
+                props.cambiarPaginaEspecifica("doctor")
+                break;
+            case "cliente":
+                props.cambiarPaginaEspecifica("cliente")
+                break;
+            case "secretaria":
+                props.cambiarPaginaEspecifica("secretaria")
+                break;
+            default:
+                props.cambiarPaginaEspecifica("cliente")
+                break;
+        }
+
     }
     return(
         <form action="" onSubmit={validar}>
@@ -40,6 +61,15 @@ const FormularioInicioSesion = (props) => {
                 value={clave}
                 onChange={cambiarEstado}
                 />
+            </div>
+            <div>
+                <label htmlFor="specific">Pagina Especifica</label><br/>
+                <input type="radio" id="doctor" name="specific" value="doctor" onChange={cambiarEstado}/>
+                <label for="doctor">DOCTOR</label><br/>
+                <input type="radio" id="cliente" name="specific" value="cliente" onChange={cambiarEstado}/>
+                <label for="cliente">CLIENTE</label><br/>
+                <input type="radio" id="secretaria" name="specific" value="secretaria" onChange={cambiarEstado}/>
+                <label for="secretaria">SECRETARIA</label>
             </div>
             <button type="submit">Iniciar Sesion</button>
         </form>
