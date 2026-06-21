@@ -1,7 +1,7 @@
 // Filename - pages/about.js
 
 import React from "react";
-import ControlledCarousel from "../componentes/Carrousels";
+import ControlledCarousel from "./Carrousels";
 import { NavLink} from "react-router-dom";
 
 const About = () => {

@@ -8,11 +8,11 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
-import Home from "./Paginas/index";
-import About from "./Paginas/about";
-import Services from "./Paginas/services";
-import Contact from "./Paginas/contact";
-import SignUp from "./Paginas/SignUp";
+import Home from "./componentes/Index";
+import About from "./componentes/About";
+import Services from "./componentes/Services";
+import Contact from "./componentes/Contact";
+import SignUp from "./componentes/SignUp";
 
 function App() {
     return (
@@ -42,7 +42,3 @@ export default App;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App/>)
-
-
-
-

@@ -1,0 +1,131 @@
+/* --- Estructura Global y Contenedor Principal --- */
+.mainLayout {
+  min-height: 100vh;
+  background-color: #f4f7f6; /* Gris muy suave de la Referencia 1 */
+  display: flex;
+  flex-direction: column;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* --- Navbar (Referencia 1) --- */
+.navbar {
+  background-color: #8A2BE2; /* Púrpura institucional */
+  padding: 1rem 10%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.navLinks a {
+  color: #ffffff;
+  text-decoration: none;
+  margin-right: 25px;
+  font-weight: 500;
+}
+
+.activeLink {
+  color: #adff2f !important; /* Resalte verde de la Ref 1 */
+}
+
+/* --- Tarjeta del Formulario (Card) --- */
+.card {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Sombra difuminada para elevación */
+  width: 100%;
+  max-width: 550px; /* Tamaño ideal para el formulario de citas */
+  margin: 40px auto;
+}
+
+.card h2 {
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #8A2BE2;
+  padding-bottom: 10px;
+}
+
+.card h3 {
+  color: #8A2BE2;
+  font-size: 1.2rem;
+  margin: 25px 0 15px 0;
+}
+
+/* --- Control de Campos (Alineación y Espaciado) --- */
+.formControl {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column; /* Stack vertical: Label sobre Input */
+}
+
+.formControl label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+/* Estilo para Inputs, Selects y Textareas */
+.formControl input, 
+.formControl select, 
+.formControl textarea {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  outline: none;
+}
+
+.formControl input:focus {
+  border-color: #8A2BE2;
+  box-shadow: 0 0 5px rgba(138, 43, 226, 0.2);
+}
+
+/* --- Botón de Acción Principal --- */
+.btnPrimary {
+  background-color: #8A2BE2;
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.btnPrimary:hover {
+  background-color: #6a1bbd;
+}
+
+.btnPrimary:active {
+  transform: scale(0.98);
+}
+
+/* --- Mensajes y Divisores --- */
+.divider {
+  border: 0;
+  border-top: 1px solid #eee;
+  margin: 20px 0;
+}
+
+.errorMsg {
+  background-color: #fff3f3;
+  color: #d9534f;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #d9534f;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.textarea{
+  height: 175px;
+  padding: 10px;
+}

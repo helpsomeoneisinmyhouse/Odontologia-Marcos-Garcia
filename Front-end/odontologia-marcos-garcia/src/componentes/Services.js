@@ -4,6 +4,8 @@ import React from "react";
 import placeholder1 from "../assets/placeholder 1.jpg"
 import placeholder2 from "../assets/placeholder 2.jpg"
 import placeholder3 from "../assets/placeholder 3.jpg"
+//import styles from '../styles/components.module.css';
+
 
 const Services = () => {
     return (

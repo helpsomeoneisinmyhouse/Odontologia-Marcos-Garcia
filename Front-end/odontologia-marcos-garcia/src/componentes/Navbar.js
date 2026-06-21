@@ -2,6 +2,8 @@
 
 import React from "react";
 import { Nav, NavLink, NavMenu } from "../elementos/NavbarElements";
+//import styles from '../styles/components.module.css';
+
 
 const Navbar = () => {
     return (

@@ -1,9 +1,11 @@
 import React, {useState} from "react";
+import styles from '../styles/components.module.css'
 
-const FormularioInicioSesion = (props) => {
+const Login = (props) => {
     const [usuario, cambiarUsuario] = useState('');
     const [clave, cambiarClave] = useState('');
     const [specific, cambiarPaginaEspecifica] = useState('');
+    //const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const cambiarEstado = (evento) => {
         if (evento.target.name === "usuario"){
@@ -16,33 +18,23 @@ const FormularioInicioSesion = (props) => {
         
     const validar = (evento) => {
         evento.preventDefault();
-        if (usuario === "clase" && clave === "clase"){
-            props.cambiarEstadoSesion(true);
-        }else{
+
+        if (usuario === "clase" && clave === "clase") {
+
+            props.onLogin(specific, { nombre: usuario });
+        } else {
             alert("Datos Incorrectos");
-            cambiarUsuario("")
-            cambiarUsuario("")
+            cambiarUsuario("");
+            cambiarClave("");
         }
+};
 
-        switch (specific) {
-            case "doctor":
-                props.cambiarPaginaEspecifica("doctor")
-                break;
-            case "cliente":
-                props.cambiarPaginaEspecifica("cliente")
-                break;
-            case "secretaria":
-                props.cambiarPaginaEspecifica("secretaria")
-                break;
-            default:
-                props.cambiarPaginaEspecifica("cliente")
-                break;
-        }
-
-    }
+    
     return(
-        <form action="" onSubmit={validar}>
+        <div>
+            <form action="" onSubmit={validar} className={styles.card}>
             <div>
+              <h3>Inicia sesion!</h3>
                 <label htmlFor="usuario">Usuario</label>
                 <input 
                     type="text" 
@@ -73,7 +65,9 @@ const FormularioInicioSesion = (props) => {
             </div>
             <button type="submit">Iniciar Sesion</button>
         </form>
+        </div>
+        
     );
 }
 
-export default FormularioInicioSesion
+export default Login
