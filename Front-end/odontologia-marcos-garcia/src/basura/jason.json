@@ -1,0 +1,14 @@
+{
+  "id": "app_982341",
+  "patientName": "Carlos Mendoza",
+  "reason": "Control Post-Operatorio",
+  "dayOfWeek": 3,          
+  "isoDate": "2026-06-24",
+  "startTime": 9.5,        
+  "duration": 1.5,        
+  "status": "confirmed",   
+  "metadata": {
+    "phone": "+58 412-1234567",
+    "historyId": "HC-4402"
+  }
+}

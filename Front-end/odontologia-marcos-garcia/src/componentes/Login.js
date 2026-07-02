@@ -34,7 +34,7 @@ const Login = (props) => {
         <div>
             <form action="" onSubmit={validar} className={styles.card}>
             <div>
-              <h3>Inicia sesion!</h3>
+              <h2>Inicia sesion!</h2>
                 <label htmlFor="usuario">Usuario</label>
                 <input 
                     type="text" 

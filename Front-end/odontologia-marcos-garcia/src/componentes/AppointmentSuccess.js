@@ -4,7 +4,7 @@ import styles from '../styles/components.module.css';
 const AppointmentSuccess = () => (
   <div className={styles.card} style={{ textAlign: 'center' }}>
     <h2 style={{ color: '#28a745' }}>¡Cita registrada con éxito!</h2>
-    <p>Su solicitud ha sido enviada al Dr. Marcos García.</p>
+    <p>Su solicitud ha sido enviada a La Clinica Armonia.</p>
     <div style={{ background: '#e9ecef', padding: '15px', borderRadius: '8px', marginTop: '20px' }}>
       <strong>Estado de la cita:</strong> <span style={{ color: '#ff8c00' }}>Pendiente</span>
     </div>
