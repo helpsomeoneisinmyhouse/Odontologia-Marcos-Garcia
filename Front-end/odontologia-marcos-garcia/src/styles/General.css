@@ -9,7 +9,7 @@
 /* El motor del Grid */
 .week-grid {
   display: grid;
-  flex-grow: 1;
+  flex-grow: 1; 
   position: relative;
 }
 

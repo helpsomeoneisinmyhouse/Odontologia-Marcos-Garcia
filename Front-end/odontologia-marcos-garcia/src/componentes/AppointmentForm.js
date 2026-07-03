@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import styles from '../styles/components.module.css'; // Importante: importar los estilos
 
 const AppointmentForm = ({ user, onSuccess }) => {
+
   const [formData, setFormData] = useState({
+    id_paciente: '',
     name_paciente: '',
     genre_paciente: '',
     birth_paciente: '',
@@ -10,15 +12,100 @@ const AppointmentForm = ({ user, onSuccess }) => {
     telf_paciente: '',
     date_cita: '',
     time_cita: '',
-    key_user: '',
-    name_user: '',
-    email_user: '',
     desc_cita: '',
+
+    id_user:'',
+    name_user:'',
+    email_user:'',
+    key_user:'',
+    logic_user:'',
+    
   });
+
+  async function fecthPostUser(params) {
+    const userAPI = 'http://127.0.0.1:8080/api/users'
+
+    const name = document.getElementById('name_user').value
+    const email = document.getElementById('email_user').value
+    const key = document.getElementById('key_user').value
+
+    try {          
+      fetch(userAPI, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name_user: name,
+          email_user: email,
+          key_user: key,
+          fk_rol: 1,
+          logic_user: 'A'
+        })});
+      } catch(error) {
+        console.error('ERROR!:'+ error)
+      }
+
+  } 
+
+    async function fecthPostPaciente(params) {
+    const pacienteAPI = 'http://127.0.0.1:8080/api/pacientes'
+
+    const name = document.getElementById('name_paciente').value
+    const genre = document.getElementById('genre_paciente').value
+    const birth = document.getElementById('birth_paciente').value
+    const dir = document.getElementById('dir_paciente').value
+    const telf = document.getElementById('telf_paciente').value
+
+    try {          
+      fetch(pacienteAPI, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fk_user: 1,//NECESITO AYUDA PARA VINCULAR ESTA LALVE FORANIA
+          name_paciente : name,
+          genre_paciente: genre,
+          birth_paciente: birth,
+          dir_paciente: dir,
+          telf_paciente : telf,
+          logic_paciente: 'A'
+        })});
+      } catch(error) {
+        console.error('ERROR!:'+ error)
+      }
+  }
+
+  async function fecthPostCita(params) {
+    const citaAPI = 'http://127.0.0.1:8080/api/citas'
+
+    const date = document.getElementById('date_cita').value
+    const time = document.getElementById('time_cita').value
+    const desc = document.getElementById('desc_cita').valuE
+
+    try {          
+      fetch(citaAPI, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fk_paciente: 1,//NECESITO AYUDA PARA VINCULAR ESTA LALVE FORANIA
+          fk_doctor: 1,
+          date_cita: date,
+          time_cita: time,
+          desc_cita: desc,
+          status_cita : 'PENDIENTE',
+          logic_cita: 'A'
+        })});
+      } catch(error) {
+        console.error('ERROR!:'+ error)
+      }
+  }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí iría la lógica para conectar con el backend en PostgreSQL [3]
+
+    fecthPostUser(e)
+    fecthPostPaciente(e)
+    fecthPostCita(e)
+
     console.log("Registrando cita para:", formData.name_paciente);
     onSuccess(); 
   };
@@ -32,6 +119,7 @@ const AppointmentForm = ({ user, onSuccess }) => {
         <div className={styles.formControl}>
           <label>Nombre completo</label>
           <input 
+            id='name_paciente'
             type="text" 
             placeholder="tu nombre" 
             required 
@@ -41,7 +129,7 @@ const AppointmentForm = ({ user, onSuccess }) => {
 
         <div className={styles.formControl}>
           <label>Sexo del paciente</label>
-          <select required onChange={(e) => setFormData({...formData, genre_paciente: e.target.value})}>
+          <select id='genre_paciente' required onChange={(e) => setFormData({...formData, genre_paciente: e.target.value})}>
             <option value="">Select...</option>
             <option value="M">Masculino</option>
             <option value="F">Femenino</option>
@@ -51,6 +139,7 @@ const AppointmentForm = ({ user, onSuccess }) => {
         <div className={styles.formControl}>
           <label>Fecha de nacimiento</label>
           <input 
+            id='birth_paciente'
             type="date" 
             required 
             onChange={(e) => setFormData({...formData, birth_paciente: e.target.value})} 
@@ -59,7 +148,8 @@ const AppointmentForm = ({ user, onSuccess }) => {
 
         <div className={styles.formControl}>
           <label>Dirección</label>
-          <input 
+          <input
+            id='dir_paciente' 
             type="text" 
             placeholder="dirección de su hogar" 
             onChange={(e) => setFormData({...formData, dir_paciente: e.target.value})} 
@@ -68,7 +158,8 @@ const AppointmentForm = ({ user, onSuccess }) => {
 
         <div className={styles.formControl}>
           <label>Teléfono</label>
-          <input 
+          <input
+            id='telf_paciente'
             type="tel" 
             placeholder="XXXX-XXXXXXX" 
             onChange={(e) => setFormData({...formData, telf_paciente: e.target.value})} 
@@ -81,6 +172,7 @@ const AppointmentForm = ({ user, onSuccess }) => {
         <div className={styles.formControl}>
           <label>Fecha deseada</label>
           <input 
+            id='date_cita'
             type="date" 
             required 
             onChange={(e) => setFormData({...formData, date_cita: e.target.value})} 
@@ -90,6 +182,7 @@ const AppointmentForm = ({ user, onSuccess }) => {
         <div className={styles.formControl}>
           <label>Hora</label>
           <input 
+            id='time_cita'
             type="time" 
             required 
             onChange={(e) => setFormData({...formData, time_cita: e.target.value})} 
@@ -101,7 +194,8 @@ const AppointmentForm = ({ user, onSuccess }) => {
 
         <div className={styles.formControl}>
           <label>Nombre del Usuario</label>
-          <input 
+          <input
+            id='name_user' 
             type="text" 
             required 
             onChange={(e) => setFormData({...formData, name_user: e.target.value})} 
@@ -110,7 +204,8 @@ const AppointmentForm = ({ user, onSuccess }) => {
 
         <div className={styles.formControl}>
           <label>Correo Electronico</label>
-          <input 
+          <input
+            id='email_user' 
             type="email" 
             required 
             onChange={(e) => setFormData({...formData, email_user: e.target.value})} 
@@ -119,7 +214,8 @@ const AppointmentForm = ({ user, onSuccess }) => {
 
         <div className={styles.formControl}>
           <label>Contrasena</label>
-          <input 
+          <input
+            id='key_user' 
             type="password" 
             required 
             onChange={(e) => setFormData({...formData, key_user: e.target.value})} 
@@ -130,7 +226,8 @@ const AppointmentForm = ({ user, onSuccess }) => {
         <h3>describenos, para que quieres la cita?</h3>
         <div className={styles.formControl}>
           <label>descripcion de tu problema</label>
-          <input 
+          <input
+            id='desc_cita' 
             type="text" 
             required 
             className={styles.textarea}
