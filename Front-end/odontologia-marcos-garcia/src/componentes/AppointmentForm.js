@@ -13,7 +13,6 @@ const AppointmentForm = ({ user, onSuccess }) => {
     date_cita: '',
     time_cita: '',
     desc_cita: '',
-
     id_user:'',
     name_user:'',
     email_user:'',
@@ -22,89 +21,65 @@ const AppointmentForm = ({ user, onSuccess }) => {
     
   });
 
-  async function fecthPostUser(params) {
-    const userAPI = 'http://127.0.0.1:8080/api/users'
-
-    const name = document.getElementById('name_user').value
+  async function fetchCitaCompleta(params) {
+    const API = 'http://127.0.0.1:8080/api/citaCompleta' 
+     
+    const name_user = document.getElementById('name_user').value
     const email = document.getElementById('email_user').value
     const key = document.getElementById('key_user').value
-
-    try {          
-      fetch(userAPI, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name_user: name,
-          email_user: email,
-          key_user: key,
-          fk_rol: 1,
-          logic_user: 'A'
-        })});
-      } catch(error) {
-        console.error('ERROR!:'+ error)
-      }
-
-  } 
-
-    async function fecthPostPaciente(params) {
-    const pacienteAPI = 'http://127.0.0.1:8080/api/pacientes'
-
-    const name = document.getElementById('name_paciente').value
+    const name_paciente = document.getElementById('name_paciente').value
     const genre = document.getElementById('genre_paciente').value
     const birth = document.getElementById('birth_paciente').value
     const dir = document.getElementById('dir_paciente').value
     const telf = document.getElementById('telf_paciente').value
-
-    try {          
-      fetch(pacienteAPI, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fk_user: 1,//NECESITO AYUDA PARA VINCULAR ESTA LALVE FORANIA
-          name_paciente : name,
-          genre_paciente: genre,
-          birth_paciente: birth,
-          dir_paciente: dir,
-          telf_paciente : telf,
-          logic_paciente: 'A'
-        })});
-      } catch(error) {
-        console.error('ERROR!:'+ error)
-      }
-  }
-
-  async function fecthPostCita(params) {
-    const citaAPI = 'http://127.0.0.1:8080/api/citas'
-
     const date = document.getElementById('date_cita').value
     const time = document.getElementById('time_cita').value
-    const desc = document.getElementById('desc_cita').valuE
+    const desc = document.getElementById('desc_cita').value
 
-    try {          
-      fetch(citaAPI, {
+    const response = await fetch(API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          fk_paciente: 1,//NECESITO AYUDA PARA VINCULAR ESTA LALVE FORANIA
+          //DATA DE USUARIO
+          name_user: name_user,
+          email_user: email,
+          key_user: key,
+          fk_rol: 1,
+          logic_user: 'A',
+          // DATA DE PACIENTE
+          name_paciente : name_paciente,
+          genre_paciente : genre,
+          birth_paciente : birth,
+          dir_paciente : dir,
+          telf_paciente : telf,
+          logic_paciente: 'A',
+          // DATA DE CITA
           fk_doctor: 1,
-          date_cita: date,
-          time_cita: time,
-          desc_cita: desc,
+          date_cita : date,
+          time_cita : time,
+          desc_cita : desc,
           status_cita : 'PENDIENTE',
           logic_cita: 'A'
-        })});
-      } catch(error) {
-        console.error('ERROR!:'+ error)
-      }
-  }
 
+        })
+      });
+
+      if (!response.ok) throw new Error('Error creating User')
+        
+      const data = await response.json();
+      return data.id
+       
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+            fetchCitaCompleta(e)
+            alert("todoo bien :p");
 
-    fecthPostUser(e)
-    fecthPostPaciente(e)
-    fecthPostCita(e)
+        } catch (error) {
+            console.error("ERROR!:", error);
+        }
 
     console.log("Registrando cita para:", formData.name_paciente);
     onSuccess(); 

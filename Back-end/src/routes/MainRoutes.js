@@ -4,6 +4,7 @@ const citasController = require('../controllers/citasController');
 const rolsController = require('../controllers/rolController');
 const userController = require('../controllers/userController');
 const pacienteController = require('../controllers/pacienteController');
+const citaCompletaController = require('../controllers/citaCompletaController')
 
 // Rutas para las citas
 router.get('/citas', citasController.getCitas);
@@ -32,5 +33,9 @@ router.get('/pacientes/:id', pacienteController.getPacienteById); // Nueva ruta 
 router.post('/pacientes', pacienteController.createPaciente);
 router.put('/pacientes/:id', pacienteController.updatePaciente);
 router.delete('/pacientes/:id', pacienteController.deletePaciente);
+
+// Rutas especiales
+router.post('/citaCompleta', citaCompletaController.createCitaCompleta);
+
 
 module.exports = router;

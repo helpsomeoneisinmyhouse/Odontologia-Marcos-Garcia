@@ -1,0 +1,19 @@
+	{
+					"name_user": "pepe",
+          "email_user": "pepe@gmail.com",
+          "key_user": 1234,
+          "fk_rol": 1,
+          "logic_user": "A",
+          "name_paciente" : "pepapzo",
+          "genre_paciente" : "M",
+          "birth_paciente" : "2026-12-01T04:00:00.000Z",
+          "dir_paciente" : "el refrie",
+          "telf_paciente" : 424750706,
+          "logic_paciente": "A",
+          "fk_doctor": 1,
+          "date_cita" : "2026-12-01T04:00:00.000Z",
+          "time_cita" : "190",
+          "desc_cita" : "esta porqueria se va a romper",
+          "status_cita" : "PENDIENTE",
+          "logic_cita": "A"
+	}
