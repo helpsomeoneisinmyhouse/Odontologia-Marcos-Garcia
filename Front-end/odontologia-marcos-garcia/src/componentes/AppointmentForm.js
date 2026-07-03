@@ -40,20 +40,17 @@ const AppointmentForm = ({ user, onSuccess }) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          //DATA DE USUARIO
           name_user: name_user,
           email_user: email,
           key_user: key,
           fk_rol: 1,
-          logic_user: 'A',
-          // DATA DE PACIENTE
+          logic_user: 'A',      
           name_paciente : name_paciente,
           genre_paciente : genre,
           birth_paciente : birth,
           dir_paciente : dir,
           telf_paciente : telf,
           logic_paciente: 'A',
-          // DATA DE CITA
           fk_doctor: 1,
           date_cita : date,
           time_cita : time,
@@ -64,19 +61,17 @@ const AppointmentForm = ({ user, onSuccess }) => {
         })
       });
 
+      const data = await response.json();
+      console.log(data)
       if (!response.ok) throw new Error('Error creating User')
         
-      const data = await response.json();
-      return data.id
        
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-            fetchCitaCompleta(e)
-            alert("todoo bien :p");
-
+          fetchCitaCompleta(e)
         } catch (error) {
             console.error("ERROR!:", error);
         }
@@ -156,12 +151,11 @@ const AppointmentForm = ({ user, onSuccess }) => {
 
         <div className={styles.formControl}>
           <label>Hora</label>
-          <input 
-            id='time_cita'
-            type="time" 
-            required 
-            onChange={(e) => setFormData({...formData, time_cita: e.target.value})} 
-          />
+          <select id='time_cita' required onChange={(e) => setFormData({...formData, time_cita: e.target.value})}>
+            <option value="">Select...</option>
+            <option value="60">1 hora</option>
+            <option value="120">2 horas</option>
+          </select> 
         </div>
 
         <hr className={styles.divider} />
