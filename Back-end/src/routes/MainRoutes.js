@@ -36,6 +36,7 @@ router.delete('/pacientes/:id', pacienteController.deletePaciente);
 
 // Rutas especiales
 router.post('/citaCompleta', citaCompletaController.createCitaCompleta);
+router.get('/citaCompleta', citaCompletaController.getCitasCompletas);
 
 
 module.exports = router;

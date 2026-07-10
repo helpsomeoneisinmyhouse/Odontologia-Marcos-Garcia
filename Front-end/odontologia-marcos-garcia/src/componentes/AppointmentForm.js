@@ -21,7 +21,7 @@ const AppointmentForm = ({ user, onSuccess }) => {
     
   });
 
-  async function fetchCitaCompleta(params) {
+  async function getCitaCompleta(params) {
     const API = 'http://127.0.0.1:8080/api/citaCompleta' 
      
     const name_user = document.getElementById('name_user').value
@@ -71,7 +71,7 @@ const AppointmentForm = ({ user, onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-          fetchCitaCompleta(e)
+          getCitaCompleta(e)
         } catch (error) {
             console.error("ERROR!:", error);
         }
@@ -153,8 +153,8 @@ const AppointmentForm = ({ user, onSuccess }) => {
           <label>Hora</label>
           <select id='time_cita' required onChange={(e) => setFormData({...formData, time_cita: e.target.value})}>
             <option value="">Select...</option>
-            <option value="60">1 hora</option>
-            <option value="120">2 horas</option>
+            <option value="1">1 hora</option>
+            <option value="2">2 horas</option>
           </select> 
         </div>
 

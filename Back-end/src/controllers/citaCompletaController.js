@@ -1,3 +1,4 @@
+const { json } = require('express');
 const pool = require('../db/db');
 
 exports.createCitaCompleta = async (req, res) => {
@@ -39,6 +40,42 @@ exports.createCitaCompleta = async (req, res) => {
     await client.query('COMMIT');
 
     res.status(201).json(citaResult.rows[0]);
+
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).json({ error: err.message });
+  } finally {
+    client.release();
+  }
+};
+
+    /*
+      id: id_cita
+      title : fk_name_paciente
+      start: date_cita
+      end : date_cita + time_cita de alguna forma
+      description: desc_cita
+      sexo: genre_paciente
+      birth: birth_paciente
+      direccion_paciente: dir_paciente
+      telefono: telf_paciente
+      status : status_cita
+   */
+exports.getCitasCompletas = async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    const citadoResult = await client.query('SELECT * FROM general.paciente INNER JOIN general.citas ON general.paciente.id_paciente = general.citas.fk_paciente');
+    if (citadoResult.rows.length === 0) {
+      return res.status(404).json({ error: 'notes not found' });
+    }
+
+
+    await client.query('COMMIT');
+
+
+    res.status(201).json(citadoResult.rows);
 
   } catch (err) {
     await client.query('ROLLBACK');

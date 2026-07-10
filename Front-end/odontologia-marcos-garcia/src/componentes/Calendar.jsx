@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import DayGridPlugin from "@fullcalendar/daygrid";
 import TimeGridPlugin from "@fullcalendar/timegrid";
@@ -7,25 +7,21 @@ import EventModal from "./EventModal";
 
 
 const CalendarioDoctorSemana = (rol) => {
+  const [lista, setLista] = useState(null)
   const [isOpen, setIsOpen] = useState(false);
   const [Citado, setCitado] = useState(null);
   const [specific, setSpecific] = useState(JSON.stringify(rol.rol));
-
   const openModal = () => setIsOpen(true);
-  
   const closeModal = () => {
     setIsOpen(false);
     setCitado(null); 
   }
-
   const confirmarCita = () => {
     alert('se confirmo!')
   }
-
   const cancelarCita = () => {
     alert('se cancelo!')
   }
-
   const RolSelector = () => {
     switch (specific) {
       case '{"rol":"doctor"}': return false;
@@ -34,37 +30,68 @@ const CalendarioDoctorSemana = (rol) => {
         return false;
     }
   };
+ 
+ async function fetchCitasCompletas() {
+   const API = 'http://127.0.0.1:8080/api/citaCompleta' 
+   try {
+     const response = await fetch(API);
+     const citas = await response.json();
+     const returning = citas.map(cita => {        
+        let fechaPrueba = new Date(cita.date_cita)
+        fechaPrueba.setHours(fechaPrueba.getHours() + cita.time_cita)
+        let fechaFinal = fechaPrueba.toISOString()
 
-  const eventos = [{
-      id: "1",
-      title:'Juan Pepe Garcia',
-      start: '2026-07-03T10:00:00Z', 
-      end: '2026-07-03T11:00:00Z',
-      description: 'esto funciona?',
-      editable: RolSelector(),
-      extendedProps : {
-          nombre : "Juan Pepe Garcia",
-          sexo : "masculino",
-          nacimiento: "1999-09-01T10:00:00Z",
-          description : "reemplazo de pene",
-          direccion : "la casa en la colina",
-          telefono : "0424-7505998",
-          descripcion : "I do not understand humans who are motivated by love. a person is born, lives for a number of years, and interacts with up to eight billion people. What proof is there of something they can't even define?",
-          inicio: '2026-07-03T10:00:00Z',
-          tiempo : '190',
-          estatus:'PENDIENTE'
-      }}]
-            
+        return {
+          id: cita.id_citas,
+          title: cita.name_paciente, 
+          start: cita.date_cita, 
+          end: fechaFinal,
+          description: cita.desc_cita,
+          editable: RolSelector(),
+          extendedProps : {
+              sexo : cita.genre_paciente,
+              nacimiento: cita.birth_paciente,
+              direccion : cita.dir_paciente,
+              telefono : cita.telf_paciente,
+              estatus:cita.status_cita}
+          }
+      });
+
+    return returning
+    } catch (error) {
+      console.error('ERROR!:'+ error)
+    }
+ 
+  }           
   function openCita(info) {
     setCitado(info.event);
     openModal();
   }
+  
 
-  console.log(RolSelector())
+  useEffect(() => {
+    const load = async () => {
+      const data = await fetchCitasCompletas();
+      if (data) {
+        setLista(data);
+        //console.log(data)
+        console.log('esta es la data que se deberia mostrar pero no aparece')
+        console.log(lista)
+      }
+    };
+ 
+    load();
+  }, []);
 
-  return (
+  /*
+  console.log('creo')
+  console.log(eventosCreo)
+  console.log('creo')
+  */
+
+ return (
     <div>
-      <EventModal 
+      <EventModal
         isOpen={isOpen} 
         onClose={closeModal} 
         cancel={cancelarCita}
@@ -86,7 +113,38 @@ const CalendarioDoctorSemana = (rol) => {
         }}
         eventDisplay="list-item"
         editable={RolSelector()}
-        events={eventos}
+        eventSources={async function(info) {
+          const API = 'http://127.0.0.1:8080/api/citaCompleta' 
+          try {
+            const response = await fetch(API);
+            const citas = await response.json();
+            const returning = citas.map(cita => {        
+                let fechaPrueba = new Date(cita.date_cita)
+                fechaPrueba.setHours(fechaPrueba.getHours() + cita.time_cita)
+                let fechaFinal = fechaPrueba.toISOString()
+
+                return {
+                  id: cita.id_citas,
+                  title: cita.name_paciente, 
+                  start: cita.date_cita, 
+                  end: fechaFinal,
+                  description: cita.desc_cita,
+                  editable: RolSelector(),
+                  extendedProps : {
+                      sexo : cita.genre_paciente,
+                      nacimiento: cita.birth_paciente,
+                      direccion : cita.dir_paciente,
+                      telefono : cita.telf_paciente,
+                      estatus:cita.status_cita}
+                  }
+              });
+
+              return returning
+              } catch (error) {
+                console.error('ERROR!:'+ error)
+              }
+        }
+        }
         eventClick={function(info) {
           openCita(info)
         }}
@@ -115,9 +173,6 @@ const CalendarioDoctorSemana = (rol) => {
               }
             });
             */
-
-
-
         }}
       />
     </div>
