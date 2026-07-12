@@ -143,7 +143,7 @@ const AppointmentForm = ({ user, onSuccess }) => {
           <label>Fecha deseada</label>
           <input 
             id='date_cita'
-            type="date" 
+            type="datetime-local" 
             required 
             onChange={(e) => setFormData({...formData, date_cita: e.target.value})} 
           />
