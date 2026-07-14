@@ -1,7 +1,7 @@
 import React from "react";
 import '../styles/modal.css';
 
-const EventModal = ({ isOpen, onClose, fetchCitas, info }) => {
+const EventModal = ({ isOpen, onClose, fetchCitas, info, trigger }) => {
     
     const handleOutsideClick = (event) => {
         if (event.target.id === "myModal") {
@@ -18,7 +18,7 @@ const EventModal = ({ isOpen, onClose, fetchCitas, info }) => {
     async function confirmarCita(e) {
         e.preventDefault()
         const id = info?.extendedProps?.id
-        const API = 'http://127.0.0.1:8080/api/citaCompleta'
+        const API = 'http://127.0.0.1:8080/api/citaCompletaStatus'
 
             try {
                 await fetch(`${API}/${id}`, {
@@ -29,6 +29,7 @@ const EventModal = ({ isOpen, onClose, fetchCitas, info }) => {
                 })
                 });
             fetchCitas(e);
+            trigger()
             onClose()
             } catch (error) {
                 console.error('Error updating movie:', error);
@@ -40,7 +41,7 @@ const EventModal = ({ isOpen, onClose, fetchCitas, info }) => {
     async function cancelarCita(e) {
         e.preventDefault()
         const id = info?.extendedProps?.id
-        const API = 'http://127.0.0.1:8080/api/citaCompleta'
+        const API = 'http://127.0.0.1:8080/api/citaCompletaStatus'
 
             try {
                 await fetch(`${API}/${id}`, {
@@ -51,6 +52,7 @@ const EventModal = ({ isOpen, onClose, fetchCitas, info }) => {
                 })
                 });
             fetchCitas(e);
+            trigger()
             onClose()
             } catch (error) {
                 console.error('Error updating movie:', error);

@@ -90,6 +90,29 @@ exports.UpdateSatusCita = async (req,res) => {
   }
 
 }
+
+exports.UpdateDateCita = async (req,res) => {
+  const { id } = req.params;
+  const { date_cita } = req.body;
+  try {
+    const result = await pool.query(
+      'UPDATE general.citas SET date_cita = $1 WHERE id_citas = $2 RETURNING *',
+      [ date_cita, id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'notes not found' });
+    }
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+
+}
+
+
+
+
+
     /*
       id: id_cita
       title : fk_name_paciente

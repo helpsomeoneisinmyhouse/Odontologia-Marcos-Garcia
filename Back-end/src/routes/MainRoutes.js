@@ -37,6 +37,8 @@ router.delete('/pacientes/:id', pacienteController.deletePaciente);
 // Rutas especiales
 router.post('/citaCompleta', citaCompletaController.createCitaCompleta);
 router.get('/citaCompleta', citaCompletaController.getCitasCompletas);
-router.put('/citaCompleta/:id', citaCompletaController.UpdateSatusCita);
+router.put('/citaCompletaStatus/:id', citaCompletaController.UpdateSatusCita);
+router.put('/citaCompletaDate/:id', citaCompletaController.UpdateDateCita);
+
 
 module.exports = router;

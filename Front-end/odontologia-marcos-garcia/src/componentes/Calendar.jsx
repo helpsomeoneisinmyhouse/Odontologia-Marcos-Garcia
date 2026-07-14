@@ -12,13 +12,19 @@ const CalendarioDoctorSemana = (rol) => {
   const [isOpen, setIsOpen] = useState(false);
   const [Citado, setCitado] = useState(null);
   const [specific, setSpecific] = useState(JSON.stringify(rol.rol));
+  const [trigger, setTrigger] = useState(1);
+
+
   const openModal = () => setIsOpen(true);
   const closeModal = () => {
     setIsOpen(false);
     setCitado(null); 
   }
+  const shootTrigger = () => {
+    setTrigger(prev => prev + 1)
+  }
 
-  const RolSelector = () => {
+const RolSelector = () => {
     switch (specific) {
       case '{"rol":"doctor"}': return false;
       case '{"rol":"secreto"}': return true;
@@ -33,14 +39,20 @@ const CalendarioDoctorSemana = (rol) => {
      const response = await fetch(API);
      const citas = await response.json();
      const returning = citas.map(cita => {        
+       let fechaPrueba2 = new Date(cita.date_cita)
         let fechaPrueba = new Date(cita.date_cita)
-        fechaPrueba.setHours(fechaPrueba.getHours() + cita.time_cita)
+
+        fechaPrueba2.setHours(fechaPrueba.getHours() - 4)
+        fechaPrueba.setHours(fechaPrueba.getHours() + cita.time_cita - 4)
+
+        let fechaInicio = fechaPrueba2.toISOString()
         let fechaFinal = fechaPrueba.toISOString()
+
 
         return {
           id: cita.id_citas,
           title: cita.name_paciente, 
-          start: cita.date_cita, 
+          start: fechaInicio, 
           end: fechaFinal,
           description: cita.desc_cita,
           editable: RolSelector(),
@@ -50,7 +62,7 @@ const CalendarioDoctorSemana = (rol) => {
               direccion : cita.dir_paciente,
               telefono : cita.telf_paciente,
               estatus:cita.status_cita,
-              start: cita.date_cita, 
+              start: fechaInicio, 
               end: fechaFinal,
               id: cita.id_citas
             }
@@ -61,17 +73,14 @@ const CalendarioDoctorSemana = (rol) => {
     } catch (error) {
       console.error('ERROR!:'+ error)
     }
-
-
-    window.location.reload();
   }           
   function openCita(info) {
     setCitado(info.event);
     openModal();
   }
-  
 
   useEffect(() => {
+    if (trigger === 0) return
     const load = async () => {
       const data = await fetchCitasCompletas();
       if (data) {
@@ -80,11 +89,13 @@ const CalendarioDoctorSemana = (rol) => {
       }
     };
     
+    setTrigger(prev => prev - 1)
     load();
-  }, []);
+  }, [trigger]);
 
     if (isLoading) {
     return <div>cargando...</div>;}
+
 
  return (
     <div>
@@ -92,7 +103,8 @@ const CalendarioDoctorSemana = (rol) => {
         isOpen={isOpen} 
         onClose={closeModal} 
         fetchCitas={fetchCitasCompletas}
-        info={Citado} 
+        info={Citado}
+        trigger={shootTrigger} 
       />
       
       <FullCalendar
@@ -111,23 +123,17 @@ const CalendarioDoctorSemana = (rol) => {
         editable={RolSelector()}
         events={lista}
         eventClick={openCita}
-        eventDrop= {function(info) {
-            //const newStart = info.event.start.toISOString();
-            // For all-day events, `end` might be null. Use start date if end is missing.
+        eventDrop= { async function(info) {
+            const id = info.event.id
+            const API = 'http://127.0.0.1:8080/api/citaCompletaDate'
+            const newStart = info.event.start.toISOString();
             //const newEnd = info.event.end ? info.event.end.toISOString() : newStart;
-            //info.event.start = newStart
-            //info.event.end = newEnd
-            /*
-
-            CODIGO ESTRUCTURAL PA EL BACKEND?????
-
-            fetch('/update-event-api', {
-              method: 'POST',
+            
+            fetch(`${API}/${id}`, {
+              method: 'PUT',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                id: info.event.id,
-                start: newStart,
-                end: newEnd
+                date_cita : newStart
               })
             }).then(response => {
               if (!response.ok) {
@@ -135,7 +141,7 @@ const CalendarioDoctorSemana = (rol) => {
                 info.revert();
               }
             });
-            */
+            shootTrigger()
         }}
       />
     </div>
