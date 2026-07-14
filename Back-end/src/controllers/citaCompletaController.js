@@ -49,18 +49,6 @@ exports.createCitaCompleta = async (req, res) => {
   }
 };
 
-    /*
-      id: id_cita
-      title : fk_name_paciente
-      start: date_cita
-      end : date_cita + time_cita de alguna forma
-      description: desc_cita
-      sexo: genre_paciente
-      birth: birth_paciente
-      direccion_paciente: dir_paciente
-      telefono: telf_paciente
-      status : status_cita
-   */
 exports.getCitasCompletas = async (req, res) => {
   const client = await pool.connect();
   try {
@@ -84,3 +72,33 @@ exports.getCitasCompletas = async (req, res) => {
     client.release();
   }
 };
+
+exports.UpdateSatusCita = async (req,res) => {
+  const { id } = req.params;
+  const { status_cita } = req.body;
+  try {
+    const result = await pool.query(
+      'UPDATE general.citas SET status_cita = $1 WHERE id_citas = $2 RETURNING *',
+      [ status_cita, id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'notes not found' });
+    }
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+
+}
+    /*
+      id: id_cita
+      title : fk_name_paciente
+      start: date_cita
+      end : date_cita + time_cita de alguna forma
+      description: desc_cita
+      sexo: genre_paciente
+      birth: birth_paciente
+      direccion_paciente: dir_paciente
+      telefono: telf_paciente
+      status : status_cita
+   */

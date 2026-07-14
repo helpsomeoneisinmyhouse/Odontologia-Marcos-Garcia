@@ -7,6 +7,7 @@ import EventModal from "./EventModal";
 
 
 const CalendarioDoctorSemana = (rol) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [lista, setLista] = useState([])
   const [isOpen, setIsOpen] = useState(false);
   const [Citado, setCitado] = useState(null);
@@ -16,12 +17,7 @@ const CalendarioDoctorSemana = (rol) => {
     setIsOpen(false);
     setCitado(null); 
   }
-  const confirmarCita = () => {
-    alert('se confirmo!')
-  }
-  const cancelarCita = () => {
-    alert('se cancelo!')
-  }
+
   const RolSelector = () => {
     switch (specific) {
       case '{"rol":"doctor"}': return false;
@@ -32,8 +28,8 @@ const CalendarioDoctorSemana = (rol) => {
   };
  
  async function fetchCitasCompletas() {
-   const API = 'http://127.0.0.1:8080/api/citaCompleta' 
-   try {
+  const API = 'http://127.0.0.1:8080/api/citaCompleta' 
+  try {
      const response = await fetch(API);
      const citas = await response.json();
      const returning = citas.map(cita => {        
@@ -53,7 +49,11 @@ const CalendarioDoctorSemana = (rol) => {
               nacimiento: cita.birth_paciente,
               direccion : cita.dir_paciente,
               telefono : cita.telf_paciente,
-              estatus:cita.status_cita}
+              estatus:cita.status_cita,
+              start: cita.date_cita, 
+              end: fechaFinal,
+              id: cita.id_citas
+            }
           }
       });
 
@@ -61,7 +61,9 @@ const CalendarioDoctorSemana = (rol) => {
     } catch (error) {
       console.error('ERROR!:'+ error)
     }
- 
+
+
+    window.location.reload();
   }           
   function openCita(info) {
     setCitado(info.event);
@@ -74,29 +76,22 @@ const CalendarioDoctorSemana = (rol) => {
       const data = await fetchCitasCompletas();
       if (data) {
         setLista([data].flat());
-        //console.log('PEPE')
-       // console.log(data)
-        console.log('esta es la data que se deberia mostrar pero no aparece')
-        //console.log(lista)
+        setIsLoading(false)
       }
     };
- 
+    
     load();
   }, []);
 
-  /*
-  console.log('creo')
-  console.log(eventosCreo)
-  console.log('creo')
-  */
+    if (isLoading) {
+    return <div>cargando...</div>;}
 
  return (
     <div>
       <EventModal
         isOpen={isOpen} 
         onClose={closeModal} 
-        cancel={cancelarCita}
-        confirm={confirmarCita}
+        fetchCitas={fetchCitasCompletas}
         info={Citado} 
       />
       
@@ -143,7 +138,6 @@ const CalendarioDoctorSemana = (rol) => {
             */
         }}
       />
-      {console.log(lista)}
     </div>
   )
 }
