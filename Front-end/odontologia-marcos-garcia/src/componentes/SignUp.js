@@ -13,19 +13,16 @@ export default function SignUp() {
   const [step, setStep] = useState('form'); // 'form' o 'success'
   const [specific, setSpecific] = useState('cliente');
 
-  // 1. Centralizamos la lógica de inicio de sesión aquí
   const handleLoginSuccess = (rolAsignado, userData) => {
     setUser(userData);
     setSpecific(rolAsignado);
     setIsAuthenticated(true);
   };
 
-  // 2. Lógica para cuando el cliente agenda una cita sin cuenta
   const handleCitaAgendada = () => {
     setStep('success');
   };
 
-  // 3. Extraemos el switch a una función limpia de renderizado
   const renderDashboardArea = () => {
     switch (specific) {
       case "doctor": return <DoctorIndex />;
@@ -36,19 +33,17 @@ export default function SignUp() {
     }
   };
 
-  // 4. Renderizado principal semántico
   return (
     <div className="App">
       <main>
         
         {isAuthenticated ? (
-          /* --- VISTA DE USUARIO AUTENTICADO --- */
           <>
             {renderDashboardArea()}
             <Boton style={{ margin: '40px auto', display:'flex'}} rojo onClick={() => {
               setIsAuthenticated(false);
               setUser(null);
-              setStep('form'); // Opcional: resetear la vista al salir
+              setStep('form');
             }}>
               cerrar sesion
             </Boton>
@@ -56,7 +51,6 @@ export default function SignUp() {
 
         ) : (
 
-          /* --- VISTA DE INVITADO (Formularios) --- */
           step === 'form' ? (
             
             <div style={{ padding: '40px', display: 'flex', justifyContent: 'center' }}>
@@ -67,13 +61,11 @@ export default function SignUp() {
                 />
               </div>
               <div className={styles.contenedor1}>
-                {/* Asumimos que tu componente Login ahora acepta un 'onLogin' */}
                 <Login onLogin={handleLoginSuccess} />
               </div>
             </div>
 
           ) : (
-            // Si step === 'success' pero no está autenticado (Cliente agendó como invitado)
             <>
               <AppointmentSuccess />
               <Boton onClick={() => setStep('form')}>Volver al inicio</Boton>

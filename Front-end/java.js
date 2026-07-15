@@ -14,3 +14,10 @@
           estatus:'PENDIENTE'}
         }
   ]
+
+            <input 
+            id='date_cita'
+            type="datetime-local" 
+            required 
+            onChange={(e) => setFormData({...formData, date_cita: e.target.value})} 
+          />

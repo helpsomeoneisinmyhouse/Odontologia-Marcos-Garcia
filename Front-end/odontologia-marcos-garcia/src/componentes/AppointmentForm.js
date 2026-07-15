@@ -11,6 +11,8 @@ const AppointmentForm = ({ user, onSuccess }) => {
     dir_paciente: '',
     telf_paciente: '',
     date_cita: '',
+    date_cita_1: '',
+    date_cita_2: '',
     time_cita: '',
     desc_cita: '',
     id_user:'',
@@ -21,7 +23,7 @@ const AppointmentForm = ({ user, onSuccess }) => {
     
   });
 
-  async function getCitaCompleta(params) {
+  async function postCitaCompleta(params) {
     const API = 'http://127.0.0.1:8080/api/citaCompleta' 
      
     const name_user = document.getElementById('name_user').value
@@ -32,9 +34,12 @@ const AppointmentForm = ({ user, onSuccess }) => {
     const birth = document.getElementById('birth_paciente').value
     const dir = document.getElementById('dir_paciente').value
     const telf = document.getElementById('telf_paciente').value
-    const date = document.getElementById('date_cita').value
+    const date1 = document.getElementById('date_cita_1').value
+    const date2 = document.getElementById('date_cita_2').value
     const time = document.getElementById('time_cita').value
     const desc = document.getElementById('desc_cita').value
+
+    const date = `${date1}T${date2}:00.000Z`
 
     const response = await fetch(API, {
         method: 'POST',
@@ -64,28 +69,71 @@ const AppointmentForm = ({ user, onSuccess }) => {
       const data = await response.json();
       console.log(data)
       if (!response.ok) throw new Error('Error creating User')
-        
-       
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-          getCitaCompleta(e)
+    let min = 8
+    let max = 18
+    let val = document.getElementById('date_cita_2').value
+
+    val = val.replace(":00","")
+    val = parseInt(val)
+
+    console.log(min + " " + max + " " + val)
+
+    if (val >= min && val <= max){
+    
+      try {
+          postCitaCompleta(e)
         } catch (error) {
             console.error("ERROR!:", error);
         }
 
-    console.log("Registrando cita para:", formData.name_paciente);
-    onSuccess(); 
+      console.log("Registrando cita para:", formData.name_paciente);
+      onSuccess(); 
+
+    } else {
+      document.getElementById('date_cita_2').value = ""
+      alert('el horario de trabajo va entre las 8:00 AM y las 6:00 PM')
+    }
+
   };
 
+  function enforceMinMax(el) {
+    let min = el.target.min
+    let max = el.target.max
+    let val = el.target.value
+
+    min = min.replace(":00","")
+    max = max.replace(":00","")
+    val = val.replace(":00","")
+
+    console.log(min + " " + max + " " + val)
+
+    if (parseInt(val) < parseInt(min)) {
+      val = min;
+
+      let finalValue = `${val}:00`
+      return finalValue
+    }
+    if (parseInt(val) > parseInt(max)) {
+      val = max;
+
+      let finalValue = `${val}:00`
+      return finalValue
+    }
+  }
+
+  if (4 < 5) {
+    console.log('SI')
+  }
+
   return (
-    <div className={styles.card}> {/* Aplica el contenedor de tarjeta blanca [2] */}
+    <div className={styles.card}>
       <h2>Agenda una cita!</h2>
       
       <form onSubmit={handleSubmit}>
-        {/* Cada campo debe ir en un div 'formControl' para que se vea ordenado */}
         <div className={styles.formControl}>
           <label>Nombre completo</label>
           <input 
@@ -141,12 +189,21 @@ const AppointmentForm = ({ user, onSuccess }) => {
 
         <div className={styles.formControl}>
           <label>Fecha deseada</label>
+
           <input 
-            id='date_cita'
-            type="datetime-local" 
+            id='date_cita_1'
+            type="date" 
             required 
-            onChange={(e) => setFormData({...formData, date_cita: e.target.value})} 
+            onChange={(e) => setFormData({...formData, date_cita_1: e.target.value})} 
           />
+          <input 
+            id='date_cita_2'
+            type="time" 
+            required 
+            onChange={(e) => {
+              setFormData({...formData, date_cita_2: e.target.value})}} 
+          />
+
         </div>
 
         <div className={styles.formControl}>
@@ -195,12 +252,11 @@ const AppointmentForm = ({ user, onSuccess }) => {
         <h3>describenos, para que quieres la cita?</h3>
         <div className={styles.formControl}>
           <label>descripcion de tu problema</label>
-          <input
-            id='desc_cita' 
-            type="text" 
-            required 
-            className={styles.textarea}
-            onChange={(e) => setFormData({...formData, desc_cita: e.target.value})} 
+          <textarea
+          id='desc_cita'
+          required
+          className={styles.textarea}
+          onChange={(e) => setFormData({...formData, desc_cita: e.target.value})} 
           />
         </div>
 

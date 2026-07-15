@@ -39,15 +39,22 @@ const RolSelector = () => {
      const response = await fetch(API);
      const citas = await response.json();
      const returning = citas.map(cita => {        
-       let fechaPrueba2 = new Date(cita.date_cita)
+        let fechaPrueba2 = new Date(cita.date_cita)
         let fechaPrueba = new Date(cita.date_cita)
+        let status = cita.status_cita
+        const hoy = new Date()
+        
 
         fechaPrueba2.setHours(fechaPrueba.getHours() - 4)
         fechaPrueba.setHours(fechaPrueba.getHours() + cita.time_cita - 4)
 
+
+        if (hoy > fechaPrueba2) {
+          status = "COMPLETADA"
+        }
+
         let fechaInicio = fechaPrueba2.toISOString()
         let fechaFinal = fechaPrueba.toISOString()
-
 
         return {
           id: cita.id_citas,
@@ -61,7 +68,7 @@ const RolSelector = () => {
               nacimiento: cita.birth_paciente,
               direccion : cita.dir_paciente,
               telefono : cita.telf_paciente,
-              estatus:cita.status_cita,
+              estatus: status,
               start: fechaInicio, 
               end: fechaFinal,
               id: cita.id_citas
