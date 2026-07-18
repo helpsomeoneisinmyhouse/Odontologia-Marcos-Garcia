@@ -39,6 +39,6 @@ router.post('/citaCompleta', citaCompletaController.createCitaCompleta);
 router.get('/citaCompleta', citaCompletaController.getCitasCompletas);
 router.put('/citaCompletaStatus/:id', citaCompletaController.UpdateSatusCita);
 router.put('/citaCompletaDate/:id', citaCompletaController.UpdateDateCita);
-
+router.put('/citaCompletaLogic/:id', citaCompletaController.logicCita);
 
 module.exports = router;

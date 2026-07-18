@@ -1,15 +1,15 @@
-/* --- Estructura Global y Contenedor Principal --- */
+
 .mainLayout {
   min-height: 100vh;
-  background-color: #f4f7f6; /* Gris muy suave de la Referencia 1 */
+  background-color: #f4f7f6; 
   display: flex;
   flex-direction: column;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* --- Navbar (Referencia 1) --- */
+
 .navbar {
-  background-color: #8A2BE2; /* Púrpura institucional */
+  background-color: #8A2BE2; 
   padding: 1rem 10%;
   display: flex;
   justify-content: flex-start;
@@ -25,17 +25,17 @@
 }
 
 .activeLink {
-  color: #adff2f !important; /* Resalte verde de la Ref 1 */
+  color: #adff2f !important; 
 }
 
-/* --- Tarjeta del Formulario (Card) --- */
+
 .card {
   background: #ffffff;
   padding: 40px;
   border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Sombra difuminada para elevación */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
   width: 100%;
-  max-width: 550px; /* Tamaño ideal para el formulario de citas */
+  max-width: 550px; 
   margin: 40px auto;
 }
 
@@ -43,7 +43,7 @@
   background: #ffffff;
   border-radius: 15px;
   width: 100%;
-  max-width: 550px; /* Tamaño ideal para el formulario de citas */
+  max-width: 550px; 
   margin: 0px auto;
 }
 
@@ -62,11 +62,11 @@
   margin: 25px 0 15px 0;
 }
 
-/* --- Control de Campos (Alineación y Espaciado) --- */
+
 .formControl {
   margin-bottom: 18px;
   display: flex;
-  flex-direction: column; /* Stack vertical: Label sobre Input */
+  flex-direction: column; 
 }
 
 .formControl label {
@@ -76,7 +76,7 @@
   font-size: 0.95rem;
 }
 
-/* Estilo para Inputs, Selects y Textareas */
+
 .formControl input, 
 .formControl select, 
 .formControl textarea {
@@ -93,7 +93,7 @@
   box-shadow: 0 0 5px rgba(138, 43, 226, 0.2);
 }
 
-/* --- Botón de Acción Principal --- */
+
 .btnPrimary {
   background-color: #8A2BE2;
   color: white;
@@ -116,7 +116,7 @@
   transform: scale(0.98);
 }
 
-/* --- Mensajes y Divisores --- */
+
 .divider {
   border: 0;
   border-top: 1px solid #eee;
@@ -166,7 +166,7 @@
   padding: 40px;
   border-radius: 15px;
   width: 100%;
-  max-width: 350px; /* Tamaño ideal para el formulario de citas */
+  max-width: 350px; 
   margin: 40px auto;
 }
 
@@ -175,7 +175,7 @@
   padding: 40px;
   border-radius: 15px;
   width: 100%;
-  max-width: 750px; /* Tamaño ideal para el formulario de citas */
+  max-width: 750px; 
   margin: 40px 15px;
 }
 
@@ -187,4 +187,3 @@
   padding-bottom: 10px;
   text-align: center;
 }
-

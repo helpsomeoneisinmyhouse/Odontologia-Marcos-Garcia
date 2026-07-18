@@ -13,8 +13,6 @@ const CalendarioDoctorSemana = (rol) => {
   const [Citado, setCitado] = useState(null);
   const [specific, setSpecific] = useState(JSON.stringify(rol.rol));
   const [trigger, setTrigger] = useState(1);
-
-
   const openModal = () => setIsOpen(true);
   const closeModal = () => {
     setIsOpen(false);
@@ -43,18 +41,37 @@ const RolSelector = () => {
         let fechaPrueba = new Date(cita.date_cita)
         let status = cita.status_cita
         const hoy = new Date()
-        
+        let color = '#adff2f'
 
         fechaPrueba2.setHours(fechaPrueba.getHours() - 4)
         fechaPrueba.setHours(fechaPrueba.getHours() + cita.time_cita - 4)
+        hoy.setHours(hoy.getHours() - 4)
 
-
-        if (hoy > fechaPrueba2) {
+        if (hoy.getTime() > fechaPrueba2.getTime()) {
           status = "COMPLETADA"
         }
 
         let fechaInicio = fechaPrueba2.toISOString()
         let fechaFinal = fechaPrueba.toISOString()
+        let editable = RolSelector()
+
+        switch (status) {
+          case "CONFIRMADA":
+            color = '#69a017'
+            break;
+          case "CANCELADA":
+            color = '#8A2BE2'
+            break;
+          case "PENDIENTE":
+            color = '#868686'
+            break;
+          case "COMPLETADA":
+            color = '#525a46'
+            break;
+          default:
+            break;
+        }
+        
 
         return {
           id: cita.id_citas,
@@ -62,7 +79,8 @@ const RolSelector = () => {
           start: fechaInicio, 
           end: fechaFinal,
           description: cita.desc_cita,
-          editable: RolSelector(),
+          editable: editable,
+          color: color,
           extendedProps : {
               sexo : cita.genre_paciente,
               nacimiento: cita.birth_paciente,

@@ -7,8 +7,7 @@ const Home = () => {
     return (
         <div id="FrontPage">
             <h1>Odontologia Confiable a la vuelta de la esquina</h1>
-            <h3>combinanos la punta de la tecnologia y nuesto corazon para todas y todos</h3>
-            <NavLink to="https://www.youtube.com/watch?v=KSoS_hZhcQ4">Agenda una cita!</NavLink>
+            <h3>Te ofrecemos la mejor calidad en tratamientos para tu bienestar dental.</h3>
         </div>
     );
 };

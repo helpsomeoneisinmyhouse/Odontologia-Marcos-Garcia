@@ -54,7 +54,7 @@ exports.getCitasCompletas = async (req, res) => {
   try {
     await client.query('BEGIN');
 
-    const citadoResult = await client.query('SELECT * FROM general.paciente INNER JOIN general.citas ON general.paciente.id_paciente = general.citas.fk_paciente');
+    const citadoResult = await client.query("SELECT * FROM general.paciente INNER JOIN general.citas ON general.paciente.id_paciente = general.citas.fk_paciente WHERE (general.citas.logic_cita = 'A')");
     if (citadoResult.rows.length === 0) {
       return res.status(404).json({ error: 'notes not found' });
     }
@@ -72,6 +72,17 @@ exports.getCitasCompletas = async (req, res) => {
     client.release();
   }
 };
+
+
+
+
+
+
+
+
+
+
+
 
 exports.UpdateSatusCita = async (req,res) => {
   const { id } = req.params;
@@ -98,6 +109,24 @@ exports.UpdateDateCita = async (req,res) => {
     const result = await pool.query(
       'UPDATE general.citas SET date_cita = $1 WHERE id_citas = $2 RETURNING *',
       [ date_cita, id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'notes not found' });
+    }
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+
+}
+
+exports.logicCita = async (req,res) => {
+  const { id } = req.params;
+  const { logic_cita } = req.body;
+  try {
+    const result = await pool.query(
+      'UPDATE general.citas SET logic_cita = $1 WHERE id_citas = $2 RETURNING *',
+      [ logic_cita, id]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'notes not found' });
